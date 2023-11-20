@@ -1,5 +1,3 @@
-using Shape.Game003;
-using SliBox.CustomInspector.Interface;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -23,7 +21,7 @@ namespace SliBoxEngine
         [Range(0, 1f)] public float volume = 1;
 
     }
-    public class AudioManager : MonoBehaviour, IOnInspectorChanged
+    public class AudioManager : MonoBehaviour
     {
 
         public static AudioManager Inst;
