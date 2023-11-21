@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Spine.Unity;
-using Spine;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -123,7 +122,7 @@ namespace SliBox.SpineAnim
 
             else
             {
-                SkeletonData m_skeletonData = SkeletonDataAsset.GetSkeletonData(false);
+                Spine.SkeletonData m_skeletonData = SkeletonDataAsset.GetSkeletonData(false);
 
                 _animationNames = new string[m_skeletonData.Animations.Items.Length];
                 for (int checkIndex = 0; checkIndex < _animationNames.Length; checkIndex++)
