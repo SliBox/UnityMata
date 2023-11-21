@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace SliBox.SpineAnim
+namespace SliBox.EasyEngine.Spine
 {
     public class SpineAnimationController : MonoBehaviour
     {

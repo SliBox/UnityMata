@@ -5,7 +5,7 @@
   	"excludePlatforms": [],
   	"allowUnsafeCode": false,
   	"overrideReferences": false,
-  	"precompiledReferences": ["SpineAnimationController"],
+  	"precompiledReferences": [],
   	"autoReferenced": true,
   	"defineConstraints": [],
   	"versionDefines": []
