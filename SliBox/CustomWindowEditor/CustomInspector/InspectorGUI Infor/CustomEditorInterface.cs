@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-namespace SliBox.CustomInspector.Interface
+namespace SliBox.CustomInspector
 {
 
     public interface IUpdateOnInspector

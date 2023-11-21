@@ -2,13 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using SliBox.CustomInspector.Interface;
-using System.Linq;
 using System;
 
-namespace SliBox.CustomEditor.Editor
+namespace SliBox.CustomInspector
 {
-
     [UnityEditor.CustomEditor(typeof(MonoBehaviour), true)]
     public class CustomInspectorGUI : UnityEditor.Editor
     {
@@ -36,10 +33,10 @@ namespace SliBox.CustomEditor.Editor
             {
                 Debug.LogError("Enable Inspector GUI Error");
             }
-            
+
 
             updateOnInspector = targetClass is IUpdateOnInspector ? (IUpdateOnInspector)targetClass : null;
-            onInspectorChanged = targetClass is IOnInspectorChanged ? (IOnInspectorChanged)targetClass :null;
+            onInspectorChanged = targetClass is IOnInspectorChanged ? (IOnInspectorChanged)targetClass : null;
             saveChanged = targetClass is ISaveButton ? (ISaveButton)targetClass : null;
             autoSaveChanged = targetClass is IAutoSave ? (IAutoSave)targetClass : null;
         }
@@ -54,7 +51,7 @@ namespace SliBox.CustomEditor.Editor
         {
             EditorGUI.BeginChangeCheck();
             DrawDefaultInspector();
-            
+
 
             EditorGUILayout.Space();
             try
@@ -65,7 +62,7 @@ namespace SliBox.CustomEditor.Editor
                     if (EditorGUI.EndChangeCheck())
                     {
                         onInspectorChanged.OnInspectorChanged();
-                        
+
                     }
                 }
             }
@@ -74,7 +71,7 @@ namespace SliBox.CustomEditor.Editor
                 GUILayout.Label("\nUpdate Inspector GUI Error\n" + e.Message);
             }
 
-            
+
 
             EditorGUILayout.Space();
             SaveChangedButton();
@@ -93,7 +90,7 @@ namespace SliBox.CustomEditor.Editor
 
         void SaveChanged()
         {
-            if(targetClass.gameObject.scene != null)
+            if (targetClass.gameObject.scene != null)
             {
                 UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(targetClass.gameObject.scene);
             }
@@ -101,5 +98,4 @@ namespace SliBox.CustomEditor.Editor
 
 
     }
-
 }
