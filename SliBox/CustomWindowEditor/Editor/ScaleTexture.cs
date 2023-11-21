@@ -20,7 +20,7 @@ namespace SliBox.Editor
             CustomFolder
         }
 
-        [MenuItem("Dev Custom/Scale Texture")]
+        [MenuItem("SliBox/Scale Texture")]
         public static void ShowWindow()
         {
             GetWindow<ScaleTexture>("Scale Texture");
