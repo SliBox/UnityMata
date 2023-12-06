@@ -1,9 +1,6 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:SliBox/EasyEngine/SliBoxEngine/AudioManager.cs.meta
-guid: 54ef29515eccde347b13fee7960bb36b
-========
 guid: ddb77962d0c5d064b92d3d539a15cc1a
->>>>>>>> Spine:SliBox/EasyEngine/Spine/SpineAnimationController.cs.meta
+Spine:SliBox/EasyEngine/Spine/SpineAnimationController.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
