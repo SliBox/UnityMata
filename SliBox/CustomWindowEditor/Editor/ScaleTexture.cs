@@ -72,6 +72,7 @@ namespace SliBox.Editor
 
         void Button()
         {
+            if (texture == null) return;
             if (
                 (scaleType == ScaleType.type1 && scaleRate <= 0) ||
                 (scaleType == ScaleType.type2 && (texture.width <= 0 || texture.height <= 0))
