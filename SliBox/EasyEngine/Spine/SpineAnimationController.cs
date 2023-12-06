@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using Spine.Unity;
 using Spine;
 using UnityEngine;
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 
-namespace SliBox.SpineAnim
+namespace SliBoxEngine.SpineAnim
 {
-    public class SpineAnimationController : MonoBehaviour
+
+    public class Sample000SpineAnimationController : MonoBehaviour
     {
         #region Inspector Editor
 
@@ -18,7 +17,7 @@ namespace SliBox.SpineAnim
             int returnIndex = 0;
 #if UNITY_EDITOR
             UnityEditor.EditorGUILayout.Space();
-            returnIndex = UnityEditor.EditorGUILayout.Popup(label + " " + GetDuration(index) + "S", index, AnimationNames);
+            returnIndex = UnityEditor.EditorGUILayout.Popup(label, index, AnimationNames);
 #endif
             return returnIndex;
         }
@@ -64,7 +63,7 @@ namespace SliBox.SpineAnim
             }
         }
 
-        SkeletonDataAsset SkeletonDataAsset
+        public SkeletonDataAsset SkeletonDataAsset
         {
             get
             {
@@ -76,7 +75,7 @@ namespace SliBox.SpineAnim
             }
         }
 
-        Spine.AnimationState AnimationState
+        public Spine.AnimationState AnimationState
         {
             get
             {
@@ -134,16 +133,12 @@ namespace SliBox.SpineAnim
         }
         #endregion
 
-        public float GetDuration(int animationIndex)
-        {
-            return SkeletonDataAsset.GetSkeletonData(true).Animations.Items[animationIndex].Duration;
-        }
+        #region Play Anim
 
-        public float GetDuration(string animationName)
+        public float GetDuration(int index)
         {
-            return SkeletonDataAsset.GetSkeletonData(true).FindAnimation(animationName).Duration;
+            return SkeletonDataAsset.GetSkeletonData(true).Animations.Items[index].Duration;
         }
-
         public float PlayAnim(int animationIndex, bool loop = false)
         {
             return AnimationState.SetAnimation(0, SkeletonDataAsset.GetSkeletonData(true).Animations.Items[animationIndex], loop).Animation.Duration;
@@ -182,6 +177,7 @@ namespace SliBox.SpineAnim
         {
             AnimationState.AddAnimation(trackIndex, animName, loop, delay);
         }
+        #endregion
 
         public void ResetSkeleton()
         {
@@ -193,14 +189,18 @@ namespace SliBox.SpineAnim
     }
 
 #if UNITY_EDITOR
-    [UnityEditor.CustomEditor(typeof(SpineAnimationController), true)]
-    public class SpineAnimationControllerInspector : Editor
+    [UnityEditor.CustomEditor(typeof(Sample000SpineAnimationController), true)]
+    public class Math003SpineAnimationControllerInspector : Editor
     {
-        SpineAnimationController targetClass;
+        Sample000SpineAnimationController targetClass;
+
+        int _reviewAnim;
+        float _reviewAnimSlide;
+        float _reviewAnimDuration;
 
         public void OnEnable()
         {
-            targetClass = (SpineAnimationController)target;
+            targetClass = (Sample000SpineAnimationController)target;
             targetClass.EnableOnInspector();
         }
 
@@ -217,10 +217,65 @@ namespace SliBox.SpineAnim
         {
             base.OnInspectorGUI();
             targetClass.UpdateOnInspector();
+            ReviewAnim();
         }
 
+        void ReviewAnim()
+        {
+            GUILayout.Space(50);
+            EditorGUI.BeginChangeCheck();
+            ReviewAnimField();
+            ReviewAnimSlide();
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                SetAnim();
+            }
+        }
+
+        void ReviewAnimField()
+        {
+            _reviewAnim = targetClass.AnimIndexGUIPopup("Review Anim", _reviewAnim);
+            _reviewAnimDuration = targetClass.GetDuration(_reviewAnim);
+        }
+        void ReviewAnimSlide()
+        {
+            _reviewAnimSlide = EditorGUILayout.Slider(_reviewAnimSlide, 0, _reviewAnimDuration);
+        }
+
+        void SetAnim()
+        {
+            Skeleton skeleton = targetClass.SkeletonAnimation != null? targetClass.SkeletonAnimation.Skeleton : targetClass.SkeletonGraphic.Skeleton;
+            
+            var state = targetClass.AnimationState;
+
+            if (!Application.isPlaying)
+            {
+                if (state != null) state.ClearTrack(0);
+                skeleton.SetToSetupPose();
+            }
+
+            var animationToUse = targetClass.AnimationState.Data.SkeletonData.Animations.Items[_reviewAnim];
+
+            if (!Application.isPlaying)
+            {
+                if (animationToUse != null)
+                {
+                    float trackTime = _reviewAnimSlide / (_reviewAnimDuration + 0.01f) * _reviewAnimDuration;
+                    targetClass.AnimationState.SetAnimation(0, animationToUse, false).TrackTime = trackTime;
+                }
+                if(targetClass.SkeletonAnimation != null)
+                {
+                    targetClass.SkeletonAnimation.Update(0);
+                    targetClass.SkeletonAnimation.LateUpdate();
+                }
+                else if(targetClass.SkeletonGraphic != null)
+                {
+                    targetClass.SkeletonGraphic.Update(0);
+                    targetClass.SkeletonGraphic.LateUpdate();
+                }
+            }
+        }
     }
 #endif
-
 }
-
