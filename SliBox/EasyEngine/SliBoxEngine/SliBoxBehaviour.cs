@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -23,6 +24,63 @@ namespace SliBoxEngine
                 }
                 return s_sliBoxBehaviour;
             }
+        }
+
+        public static int Today
+        {
+            get { return ((int)DateTimeOffset.Now.ToUnixTimeSeconds() + (int)DateTimeOffset.Now.Offset.TotalSeconds) / (60 * 60 * 24); }
+        }
+
+        public static float FixDeltaTime
+        {
+            get
+            {
+                if (Time.deltaTime > 0.2)
+                {
+                    return 0.2f;
+                }
+                else
+                {
+                    return Time.deltaTime;
+                }
+            }
+        }
+
+        public static bool InternetIsConnecting
+        {
+            get
+            {
+                return !(Application.internetReachability == NetworkReachability.NotReachable);
+            }
+        }
+
+        public static IEnumerator ActionNeedNetWork(Action action, Action disconenctAction = null)
+        {
+            while (!InternetIsConnecting)
+            {
+                if (disconenctAction != null) disconenctAction();
+                yield return null;
+            }
+
+            action();
+        }
+
+
+        public static Vector2 AngleToVector2(float a, bool bUseRadians = false)
+        {
+            Vector2 v = Vector2.up; // vector offset
+            if (!bUseRadians) a *= Mathf.Deg2Rad;
+            var ca = Mathf.Cos(a);
+            var sa = Mathf.Sin(a);
+            var rx = v.x * ca - v.y * sa;
+
+            return new Vector2((float)rx * -1, (float)(v.x * sa + v.y * ca));
+        }
+
+
+        public static float Vector2ToAngle(Vector2 dirVector)
+        {
+            return dirVector.x > 0 ? -Vector2.Angle(Vector2.up, dirVector) : Vector2.Angle(Vector2.up, dirVector);
         }
 
 
@@ -171,11 +229,11 @@ namespace SliBoxEngine
 
         public class LoadResources
         {
-            public static Object Load(string path)
+            public static UnityEngine.Object Load(string path)
             {
                 return Resources.Load(path);
             }
-            public static string GetObjectPathInResourcesFolder(Object obj)
+            public static string GetObjectPathInResourcesFolder(UnityEngine.Object obj)
             {
 #if UNITY_EDITOR
                 string path = AssetDatabase.GetAssetPath(obj);
