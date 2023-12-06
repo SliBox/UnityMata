@@ -10,6 +10,8 @@ namespace SliBoxEngine.SpineAnim
 
     public class Sample000SpineAnimationController : MonoBehaviour
     {
+        [HideInInspector] public int reviewAnim;
+        [HideInInspector] public float reviewAnimSlide;
         #region Inspector Editor
 
         public int AnimIndexGUIPopup(string label, int index)
@@ -194,8 +196,6 @@ namespace SliBoxEngine.SpineAnim
     {
         Sample000SpineAnimationController targetClass;
 
-        int _reviewAnim;
-        float _reviewAnimSlide;
         float _reviewAnimDuration;
 
         public void OnEnable()
@@ -235,12 +235,12 @@ namespace SliBoxEngine.SpineAnim
 
         void ReviewAnimField()
         {
-            _reviewAnim = targetClass.AnimIndexGUIPopup("Review Anim", _reviewAnim);
-            _reviewAnimDuration = targetClass.GetDuration(_reviewAnim);
+            targetClass.reviewAnim = targetClass.AnimIndexGUIPopup("Review Anim", targetClass.reviewAnim);
+            _reviewAnimDuration = targetClass.GetDuration(targetClass.reviewAnim);
         }
         void ReviewAnimSlide()
         {
-            _reviewAnimSlide = EditorGUILayout.Slider(_reviewAnimSlide, 0, _reviewAnimDuration);
+            targetClass.reviewAnimSlide = EditorGUILayout.Slider(targetClass.reviewAnimSlide, 0, _reviewAnimDuration);
         }
 
         void SetAnim()
@@ -255,13 +255,13 @@ namespace SliBoxEngine.SpineAnim
                 skeleton.SetToSetupPose();
             }
 
-            var animationToUse = targetClass.AnimationState.Data.SkeletonData.Animations.Items[_reviewAnim];
+            var animationToUse = targetClass.AnimationState.Data.SkeletonData.Animations.Items[targetClass.reviewAnim];
 
             if (!Application.isPlaying)
             {
                 if (animationToUse != null)
                 {
-                    float trackTime = _reviewAnimSlide / (_reviewAnimDuration + 0.01f) * _reviewAnimDuration;
+                    float trackTime = targetClass.reviewAnimSlide / (_reviewAnimDuration + 0.01f) * _reviewAnimDuration;
                     targetClass.AnimationState.SetAnimation(0, animationToUse, false).TrackTime = trackTime;
                 }
                 if(targetClass.SkeletonAnimation != null)
