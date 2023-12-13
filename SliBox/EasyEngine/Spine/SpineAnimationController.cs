@@ -8,7 +8,7 @@ using UnityEditor;
 namespace SliBoxEngine.SpineAnim
 {
 
-    public class Sample000SpineAnimationController : MonoBehaviour
+    public class SpineAnimationController : MonoBehaviour
     {
         [HideInInspector] public int reviewAnim;
         [HideInInspector] public float reviewAnimSlide;
@@ -191,16 +191,16 @@ namespace SliBoxEngine.SpineAnim
     }
 
 #if UNITY_EDITOR
-    [UnityEditor.CustomEditor(typeof(Sample000SpineAnimationController), true)]
-    public class Math003SpineAnimationControllerInspector : Editor
+    [UnityEditor.CustomEditor(typeof(SpineAnimationController), true)]
+    public class SpineAnimationControllerInspector : Editor
     {
-        Sample000SpineAnimationController targetClass;
+        SpineAnimationController targetClass;
 
         float _reviewAnimDuration;
 
         public void OnEnable()
         {
-            targetClass = (Sample000SpineAnimationController)target;
+            targetClass = (SpineAnimationController)target;
             targetClass.EnableOnInspector();
         }
 
