@@ -69,11 +69,7 @@ namespace SliBoxEngine.SpineAnim
         {
             get
             {
-                if (_skeletonAnimation != null) return _skeletonAnimation.SkeletonDataAsset;
-                else if (_skeletonGraphic != null) return _skeletonGraphic.SkeletonDataAsset;
-                else if (SkeletonAnimation != null) return SkeletonAnimation.skeletonDataAsset;
-                else if (SkeletonGraphic != null) return SkeletonGraphic.skeletonDataAsset;
-                else return null;
+                return SkeletonRenderer.SkeletonDataAsset;
             }
         }
 
@@ -96,13 +92,23 @@ namespace SliBoxEngine.SpineAnim
             }
         }
 
+
+
+        SkeletonRenderer _skeletonRenderer;
+        public SkeletonRenderer SkeletonRenderer
+        {
+            get
+            {
+                if (_skeletonRenderer == null) _skeletonRenderer = GetComponent<SkeletonRenderer>();
+                return _skeletonRenderer;
+            }
+        }
+
         public Skeleton Skeleton
         {
             get
             {
-                if (SkeletonAnimation != null) return SkeletonAnimation.Skeleton;
-                else if (SkeletonGraphic != null) return SkeletonGraphic.Skeleton;
-                else return null;
+                return SkeletonRenderer.Skeleton;
             }
         }
 
