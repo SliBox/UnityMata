@@ -96,6 +96,16 @@ namespace SliBoxEngine.SpineAnim
             }
         }
 
+        public Skeleton Skeleton
+        {
+            get
+            {
+                if (SkeletonAnimation != null) return SkeletonAnimation.Skeleton;
+                else if (SkeletonGraphic != null) return SkeletonGraphic.Skeleton;
+                else return null;
+            }
+        }
+
         #endregion
 
         #region Anim Names
